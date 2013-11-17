@@ -1,0 +1,63 @@
+name: RoboticStaff
+main: com.gmail.raynlegends.RoboticStaff.RoboticStaff
+version: 1.9
+description: Auto anwser to player message and more!
+author: RaynLegends
+    
+commands:
+    helpme:
+        description: Type /helpme if you need help!
+        usage: /helpme <id>
+        permission: roboticstaff.helpme
+        permission-message: You don't have permission for do that
+    roboticstaff:
+        description: General command of RoboticStaff
+        usage: /roboticstaff <tag|words|blocked>
+        permission: roboticstaff.access
+        permission-message: You don't have permission for do that
+      
+permissions:
+    roboticstaff.*:
+        description: Gives access to all RoboticStaff commands
+        children:
+            roboticstaff.helpme: true
+            roboticstaff.reload: true
+            roboticstaff.autoanswer.list: true
+            roboticstaff.autoanswer.bypass: true
+            roboticstaff.antiswearing.list: true
+            roboticstaff.antiswearing.bypass: true
+            roboticstaff.blockedcommands.list: true
+            roboticstaff.blockedcommands.bypass: true
+    roboticstaff.helpme:
+        description: Allows using helpme command
+        default: true
+    roboticstaff.access:
+        description: Access to /roboticstaff
+        default: op
+    roboticstaff.reload:
+        description: Allows to use /roboticstaff reload
+        default: op
+    roboticstaff.autoanswer.list:
+        description: Get a list of tags
+        default: op
+        children:
+            roboticstaff.access: true
+    roboticstaff.autoanswer.bypass:
+        description: Bypass tags
+        default: op
+    roboticstaff.antiswearing.list:
+        description: Get a list of banned words
+        default: op
+        children:
+            roboticstaff.access: true
+    roboticstaff.antiswearing.bypass:
+        description: Bypass banned words
+        default: op
+    roboticstaff.blockedcommands.list:
+        description: Get a list of blocked commands
+        default: op
+        children:
+            roboticstaff.access: true
+    roboticstaff.blockedcommands.bypass:
+        description: Bypass blocked commands
+        default: op
