@@ -1,0 +1,84 @@
+### RoboticStaff configuration ###
+config-version: '1.9' # Don't edit this!
+update-checker: 'true' # Change to "false" if you don't want to check updates
+
+## General command ##
+
+roboticstaff-prefix: '&6[RoboticStaff]&e '
+roboticstaff-join: 'This server use RoboticStaff!'
+roboticstaff-basic: 'Type "/roboticstaff reload" to reload config, "/roboticstaff tag" to get a tag list, "/roboticstaff words" to get a banned words list, "/roboticstaff blocked" to get a list of the blocked commands'
+roboticstaff-reload: 'Config reloaded!'
+roboticstaff-tag: 'List of the tag'
+roboticstaff-words: 'List of banned words'
+roboticstaff-blocked: 'List of blocked commands'
+roboticstaff-blocked-perworld: 'To get a list of blocked commands of a specific world, type "/roboticstaff blocked <WorldName>"'
+roboticstaff-error-1: 'Command not found!'
+roboticstaff-error-2: 'World not found in configuration!'
+
+## Helpme ##
+
+helpme-help: 'Need help? Type "/helpme [id]"!'
+
+helpme-ask:
+  - 'What is that plugin?'
+  - 'Can I translate the plugin?'
+  - 'What are the future features?'
+
+helpme-answer:
+  - 'Is a simple plugin which will be able in the future to replace partly your staff'
+  - 'Yes, you can! ALL the messages is configurable in config.yml!'
+  - 'Check the TODO list of BukkitDev page for a list of the future feature!'
+
+helpme-error-1: 'Invalid ask id!'
+helpme-error-2: 'Id must be a number!'
+helpme-error-3: 'Right use: "/helpme id"'
+
+## AutoAnswer ##
+
+autoanswer-tag:
+  - 'RoboticStaff'
+  - 'I, need, help'
+  - 'Can, I, become, an, admin %or% I, would, like, to, become, admin'
+  - 'Ban, me, please'
+  - 'Hi raynlegends %or% Hey raynlegends %or% Good morning raynlegends'
+  - 'How, can, I, configure, this, plugin'
+  
+autoanswer-tag-answer:
+  - 'Its the name of this plugin, %player%'
+  - 'Type /helpme!'
+  - 'Sorry, you cant'
+  - '/kick %player%'
+  - '%noprefix% &4[Founder] &4Rayn&8Legends&r: Hi %player%'
+  - 'Visit the BukkitDev page! &4http://dev.bukkit.org/bukkit-mods/RoboticStaff'
+
+## AntiSwearing ##
+
+antiswearing-words:
+  - 'Fuck'
+  - 'Shit'
+  - 'Bitch'
+  
+antiswearing-beep: '[BIP]'
+
+## BlockedCommands ##
+
+blockedcommands-message: '&4This command is blocked in this world'
+
+blockedcommands-general:
+  - q
+  - logout
+  - plugins
+
+blockedcommands-perworld:
+  world:
+    - pl
+  world_nether:
+    - pl
+  world_the_end:
+    - pl
+    
+## AntiSpam ##
+
+antispam-message: 'Wait %time% seconds to send another message'
+
+antispam-delay: '3' # The amount in seconds of the time that players have to wait for send messages
