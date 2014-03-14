@@ -1,6 +1,6 @@
 name: RoboticStaff
-main: com.gmail.raynlegends.RoboticStaff.RoboticStaff
-version: 1.9
+main: com.gmail.raynlegends.RoboticStaff.Main
+version: 2.0
 description: Auto anwser to player message and more!
 author: RaynLegends
     
@@ -12,7 +12,7 @@ commands:
         permission-message: You don't have permission for do that
     roboticstaff:
         description: General command of RoboticStaff
-        usage: /roboticstaff <tag|words|blocked>
+        usage: /roboticstaff <reload|tags|words|blocked>
         permission: roboticstaff.access
         permission-message: You don't have permission for do that
       

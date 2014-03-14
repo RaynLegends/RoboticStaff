@@ -1,19 +1,13 @@
-### RoboticStaff configuration ###
-config-version: '1.9' # Don't edit this!
+########## RoboticStaff configuration ##########
+# Plugin made by RaynLegends
+# Bukkitdev page: http://dev.bukkit.org/bukkit-plugins/roboticstaff/
+# Github: https://github.com/RaynLegends/RoboticStaff/
+### If you find a bug, please let me know :D ###
+
+config-version: '2.0' # Don't edit this!
 update-checker: 'true' # Change to "false" if you don't want to check updates
 
-## General command ##
-
 roboticstaff-prefix: '&6[RoboticStaff]&e '
-roboticstaff-join: 'This server use RoboticStaff!'
-roboticstaff-basic: 'Type "/roboticstaff reload" to reload config, "/roboticstaff tag" to get a tag list, "/roboticstaff words" to get a banned words list, "/roboticstaff blocked" to get a list of the blocked commands'
-roboticstaff-reload: 'Config reloaded!'
-roboticstaff-tag: 'List of the tag'
-roboticstaff-words: 'List of banned words'
-roboticstaff-blocked: 'List of blocked commands'
-roboticstaff-blocked-perworld: 'To get a list of blocked commands of a specific world, type "/roboticstaff blocked <WorldName>"'
-roboticstaff-error-1: 'Command not found!'
-roboticstaff-error-2: 'World not found in configuration!'
 
 ## Helpme ##
 
