@@ -4,14 +4,20 @@
 # Github: https://github.com/RaynLegends/RoboticStaff/
 ### If you find a bug, please let me know :D ###
 
-config-version: '2.0' # Don't edit this!
+### RoboticStaff configuration ###
+config-version: '1.9' # Don't edit this!
 update-checker: 'true' # Change to "false" if you don't want to check updates
 
+## General command ##
+
 roboticstaff-prefix: '&6[RoboticStaff]&e '
+roboticstaff-join: 'This server use RoboticStaff!'
 
 ## Helpme ##
 
+helpme-enabled: true
 helpme-help: 'Need help? Type "/helpme [id]"!'
+helpme-disabled-message: '&rUnknown command. Type "/help" for help.'
 
 helpme-ask:
   - 'What is that plugin?'
@@ -28,6 +34,8 @@ helpme-error-2: 'Id must be a number!'
 helpme-error-3: 'Right use: "/helpme id"'
 
 ## AutoAnswer ##
+
+autoanswer-enabled: true
 
 autoanswer-tag:
   - 'RoboticStaff'
@@ -47,6 +55,8 @@ autoanswer-tag-answer:
 
 ## AntiSwearing ##
 
+antiswearing-enabled: true
+
 antiswearing-words:
   - 'Fuck'
   - 'Shit'
@@ -56,6 +66,7 @@ antiswearing-beep: '[BIP]'
 
 ## BlockedCommands ##
 
+blockedcommands-enabled: true
 blockedcommands-message: '&4This command is blocked in this world'
 
 blockedcommands-general:
@@ -70,9 +81,32 @@ blockedcommands-perworld:
     - pl
   world_the_end:
     - pl
-    
+
 ## AntiSpam ##
+antispam-delay:
+  enabled: true
+  message: 'You have to wait %time% to send a message'
+  delay-between-messages: 3
 
-antispam-message: 'Wait %time% seconds to send another message'
+antispam-ipspam:
+  enabled: true
+  replace-with: "----"
+  command-on-ipspam: '/kick %player% Dont spam ip!'
 
-antispam-delay: '3' # The amount in seconds of the time that players have to wait for send messages
+antispam-websitespam:
+  enabled: true
+  replace-with: "----"
+  command-on-websitespam: '/kick %player% Dont spam website!'
+
+## OnActions ##
+# Only two events at the moment, I'll add more events in the next version! #
+
+playerjoin:
+  enabled: true
+  commands:
+    - '/gamemode 0 %player%'
+  
+playerdeath:
+  enabled: false
+  commands:
+    - '/tell %player% You died'

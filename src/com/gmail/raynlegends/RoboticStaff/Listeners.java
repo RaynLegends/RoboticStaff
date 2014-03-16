@@ -2,11 +2,12 @@ package com.gmail.raynlegends.RoboticStaff;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -24,8 +25,14 @@ public class Listeners implements Listener {
 	@EventHandler
 	public void onPlayerJoinEvent(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
-		if (!plugin.getConfig().getString("roboticstaff-join").equals("")) {
-			functions.sendPlayerMessage(player, ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("roboticstaff-join")));
+		if (!plugin.join.equals("")) {
+			functions.sendPlayerMessage(player, plugin.join);
+		}
+		if (plugin.getConfig().getBoolean("playerjoin.enabled")) {
+			for (String playerJoinCommand : plugin.playerJoinCommands) {
+				playerJoinCommand.replace("%player%", player.getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerJoinCommand.replace("/", ""));
+			}
 		}
 	}
 
@@ -66,20 +73,41 @@ public class Listeners implements Listener {
 
 		// Antispam
 
-		if (!player.hasPermission("roboticstaff.antispam.bypass")) {
-			if (plugin.chatMap.get(player) > System.currentTimeMillis()) {
-				event.setCancelled(true);
-				long time = plugin.chatMap.get(player) - System.currentTimeMillis();
-				functions.sendPlayerMessage(player, plugin.getConfig().getString("antispam-message").replace("%time%", "" + time));
-			} else {
-				plugin.chatMap.remove(player);
-				plugin.chatMap.put(player, System.currentTimeMillis() + plugin.getConfig().getInt("antispam-delay") * 10000);
+		if (plugin.getConfig().getBoolean("antispam-delay.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.delay")) {
+			if (plugin.chatMap.get(event.getPlayer()) == null) {
+				plugin.chatMap.put(event.getPlayer(), Long.valueOf(System.currentTimeMillis()));
 			}
+			if (plugin.chatMap.get(event.getPlayer()) > System.currentTimeMillis()) {
+				event.setCancelled(true);
+				long time = plugin.chatMap.get(event.getPlayer()) - System.currentTimeMillis();
+				functions.sendPlayerMessage(event.getPlayer(), plugin.getConfig().getString("antispam-delay.message").replace("%time%", String.format("%d second(s)", TimeUnit.MILLISECONDS.toSeconds(time) + 1L - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)))));
+			} else {
+				plugin.chatMap.remove(event.getPlayer());
+				try {
+					plugin.chatMap.put(event.getPlayer(), System.currentTimeMillis() + plugin.getConfig().getInt("antispam-delay.delay-between-messages") * 1000);
+				} catch (Exception e) {
+					plugin.chatMap.put(event.getPlayer(), System.currentTimeMillis() + 1000L);
+				}
+			}
+		}
+
+		if (plugin.getConfig().getBoolean("antispam-ipspam.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.ipspam") && event.getMessage().toLowerCase().matches("(?s).*([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]).*")) {
+			String message_ipspam_replaced = event.getMessage().replaceAll("(?s)([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])", plugin.getConfig().getString("antispam-ipspam.replace-with"));
+			event.setMessage(message_ipspam_replaced);
+			String commandIpSpam = plugin.getConfig().getString("antispam-ipspam.command-on-ipspam").replace("%player%", player.getName());
+			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
+		}
+
+		if (plugin.getConfig().getBoolean("antispam-websitespam.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.websitespam") && event.getMessage().toLowerCase().matches(".*[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z].*")) {
+			String message_websitespam_replaced = event.getMessage().replaceAll("[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z]", plugin.getConfig().getString("antispam-websitespam.replace-with"));
+			event.setMessage(message_websitespam_replaced);
+			String commandIpSpam = plugin.getConfig().getString("antispam-websitespam.command-on-websitespam").replace("%player%", player.getName());
+			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
 		}
 
 		// Autoanswer
 
-		if (!player.hasPermission("roboticstaff.autoanswer.bypass")) {
+		if (plugin.getConfig().getBoolean("autoanswer-enabled") && !player.hasPermission("roboticstaff.autoanswer.bypass")) {
 			int tagInt = 0;
 			for (String tag : plugin.tags) {
 				tag.toLowerCase().replace(" ", "");
@@ -125,11 +153,21 @@ public class Listeners implements Listener {
 		}
 
 		// AntiSwearing
-		
-		if(!event.getPlayer().hasPermission("roboticstaff.antiswearing.bypass")) {
+
+		if(plugin.getConfig().getBoolean("antiswearing-enabled") && !player.hasPermission("roboticstaff.antiswearing.bypass")) {
 			for (String word : plugin.words) {
 				word.toLowerCase();
 				event.setMessage(event.getMessage().replaceAll("(?i)" + word, plugin.beep));
+			}
+		}
+	}
+
+	@EventHandler
+	public void onPlayerDeathEvent(PlayerDeathEvent event) {
+		if (plugin.getConfig().getBoolean("playerdeath.enabled")) {
+			for (String playerDeathCommand : plugin.getConfig().getStringList("playerdeath.commands")) {
+				playerDeathCommand.replace("%player%", event.getEntity().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerDeathCommand.replace("/", ""));
 			}
 		}
 	}

@@ -1,7 +1,6 @@
 package com.gmail.raynlegends.RoboticStaff;
 
 import java.io.File;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,11 +10,11 @@ import org.bukkit.entity.Player;
 public class Functions {
 
 	private Main plugin;
-	
+
 	public Functions(Main instance) {
 		plugin = instance;
 	}
-	
+
 	/** 
 	 * Check for updates
 	 * 
@@ -64,7 +63,7 @@ public class Functions {
 			plugin.getLogger().info(Messages.configChecked);
 		}
 	}
-	
+
 	/** 
 	 * Send a message to the player, with the prefix [RoboticStaff]
 	 * @param player -> The player to send the message
@@ -73,9 +72,9 @@ public class Functions {
 	public void sendPlayerMessage(Player player, String string)
 	{
 		string = ChatColor.translateAlternateColorCodes('&', string);
-		player.sendMessage(plugin.prefix + string);
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.prefix) + string);
 	}
-	
+
 	/** 
 	 * Send a message to the player, with the prefix [RoboticStaff]
 	 * @param sender -> The sender to send the message
@@ -84,7 +83,7 @@ public class Functions {
 	public void sendSenderMessage(CommandSender sender, String string)
 	{
 		string = ChatColor.translateAlternateColorCodes('&', string);
-		sender.sendMessage(plugin.prefix + string);
+		sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.prefix) + string);
 	}
 
 	/** 
@@ -93,7 +92,7 @@ public class Functions {
 	 */
 	public void sendBroadcastMessage(String string) {
 		string = ChatColor.translateAlternateColorCodes('&', string);
-		plugin.getServer().broadcastMessage(plugin.prefix + string);
+		plugin.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', plugin.prefix) + string);
 	}
 
 	/**
@@ -105,13 +104,14 @@ public class Functions {
 		string = ChatColor.translateAlternateColorCodes('&', string);
 		player.sendMessage(string);
 	}
-	
+
 	/**
 	 * Reloads the configuration, some variables and do some stuffs
 	 */
 	public void reloadPlugin(CommandSender sender) {
 		plugin.reloadConfig();
-		plugin.prefix = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("roboticstaff-prefix"));
+		plugin.prefix = plugin.getConfig().getString("roboticstaff-prefix");
+		plugin.join = plugin.getConfig().getString("roboticstaff-join");
 		plugin.asks = plugin.getConfig().getStringList("helpme-asks");
 		plugin.answers = plugin.getConfig().getStringList("helpme-answers");
 		plugin.tags = plugin.getConfig().getStringList("autoanswer-tags");
@@ -132,15 +132,11 @@ public class Functions {
 	 * @param player -> The player
 	 */
 	public void checkAskAndTags(CommandSender sender) {
-		List<String> ask = plugin.getConfig().getStringList("helpme-ask");
-		List<String> answer = plugin.getConfig().getStringList("helpme-answer");
-		if (ask.size() != answer.size()) {
+		if (plugin.asks.size() != plugin.answers.size()) {
 			sendSenderMessage(sender, Messages.disequalAskAndAnswers);
 		}
 
-		List<String> tag = plugin.getConfig().getStringList("autoanswer-tag");
-		List<String> tag_answer = plugin.getConfig().getStringList("autoanswer-tag-answer");
-		if (tag.size() != tag_answer.size()) {
+		if (plugin.tags.size() != plugin.tag_answers.size()) {
 			sendSenderMessage(sender, Messages.disequalTagAndTagAnswers);
 		}
 
@@ -152,7 +148,7 @@ public class Functions {
 			public void run() {
 				answer.replace("%player%", player.getName());
 				answer.replace("%noprefix%", "");
-				
+
 				if (answer.startsWith("/")) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), answer.replace("/", ""));
 				} else if (answer.startsWith("%broadcast%")) {

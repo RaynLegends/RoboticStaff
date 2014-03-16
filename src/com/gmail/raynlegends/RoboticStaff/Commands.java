@@ -37,7 +37,7 @@ public class Commands implements CommandExecutor {
 
 					if (sender.hasPermission("roboticstaff.autoanswer.list")) {
 						functions.sendSenderMessage(sender, Messages.tagsList);
-						for (String tag : plugin.getConfig().getStringList("autoanswer-tag")) {
+						for (String tag : plugin.tags) {
 							sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + tag);
 						}
 					}
@@ -47,7 +47,7 @@ public class Commands implements CommandExecutor {
 
 					if (sender.hasPermission("roboticstaff.antiswearing.list")) {
 						functions.sendSenderMessage(sender, Messages.wordsList);
-						for (String word : plugin.getConfig().getStringList("antiswearing-words")) {
+						for (String word : plugin.words) {
 							sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + word);
 						}
 					}
@@ -95,26 +95,30 @@ public class Commands implements CommandExecutor {
 		// Command: /helpme
 
 		if (label.equalsIgnoreCase("helpme")) {
-			if (args.length == 0) {
-				functions.sendSenderMessage(sender, plugin.helpme_help);
-				int i = 0;
-				for (String ask : plugin.asks) {
-					sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + i + " - " + ask);
-					i++;
-				}
-			} else if (args.length == 1) {
-				try {
-					int int_arg = Integer.parseInt(args[0]);
-					if (int_arg <= plugin.asks.size() - 1) {
-						sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + int_arg + " - " + plugin.asks.get(int_arg));
-					} else {
-						sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_1);
+			if (plugin.getConfig().getBoolean("helpme-enabled")) {
+				if (args.length == 0) {
+					functions.sendSenderMessage(sender, plugin.helpme_help);
+					int i = 0;
+					for (String ask : plugin.asks) {
+						sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + i + " - " + ask);
+						i++;
 					}
-				} catch (Exception e) {
-					sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_2);
+				} else if (args.length == 1) {
+					try {
+						int int_arg = Integer.parseInt(args[0]);
+						if (int_arg <= plugin.asks.size() - 1) {
+							sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + int_arg + " - " + plugin.asks.get(int_arg));
+						} else {
+							sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_1);
+						}
+					} catch (Exception e) {
+						sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_2);
+					}
+				} else {
+					sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_3);
 				}
 			} else {
-				sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_3);
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("helpme-disabled-message")));
 			}
 			return true;
 		}

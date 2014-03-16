@@ -12,7 +12,7 @@ commands:
         permission-message: You don't have permission for do that
     roboticstaff:
         description: General command of RoboticStaff
-        usage: /roboticstaff <reload|tags|words|blocked>
+        usage: /roboticstaff [reload|tag|words|blocked]
         permission: roboticstaff.access
         permission-message: You don't have permission for do that
       
@@ -28,6 +28,7 @@ permissions:
             roboticstaff.antiswearing.bypass: true
             roboticstaff.blockedcommands.list: true
             roboticstaff.blockedcommands.bypass: true
+            roboticstaff.antispam.bypass: true
     roboticstaff.helpme:
         description: Allows using helpme command
         default: true
@@ -60,4 +61,19 @@ permissions:
             roboticstaff.access: true
     roboticstaff.blockedcommands.bypass:
         description: Bypass blocked commands
+        default: op
+    roboticstaff.antispam.bypass:
+        description: Bypass all antispam stuffs
+        children:
+            roboticstaff.antispam.bypass.delay: true
+            roboticstaff.antispam.bypass.ipspam: true
+            roboticstaff.antispam.bypass.websitespam: true
+    roboticstaff.antispam.bypass.delay:
+        description: Bypass delay
+        default: op
+    roboticstaff.antispam.bypass.ipspam:
+        description: Bypass ipspam
+        default: op
+    roboticstaff.antispam.bypass.websitespam:
+        description: Bypass websitespam
         default: op
