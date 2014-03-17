@@ -30,7 +30,7 @@ public class Listeners implements Listener {
 		}
 		if (plugin.getConfig().getBoolean("playerjoin.enabled")) {
 			for (String playerJoinCommand : plugin.playerJoinCommands) {
-				playerJoinCommand.replace("%player%", player.getName());
+				playerJoinCommand = playerJoinCommand.replace("%player%", player.getName());
 				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerJoinCommand.replace("/", ""));
 			}
 		}
@@ -81,6 +81,7 @@ public class Listeners implements Listener {
 				event.setCancelled(true);
 				long time = plugin.chatMap.get(event.getPlayer()) - System.currentTimeMillis();
 				functions.sendPlayerMessage(event.getPlayer(), plugin.getConfig().getString("antispam-delay.message").replace("%time%", String.format("%d second(s)", TimeUnit.MILLISECONDS.toSeconds(time) + 1L - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(time)))));
+				return;
 			} else {
 				plugin.chatMap.remove(event.getPlayer());
 				try {
@@ -99,8 +100,13 @@ public class Listeners implements Listener {
 		}
 
 		if (plugin.getConfig().getBoolean("antispam-websitespam.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.websitespam") && event.getMessage().toLowerCase().matches(".*[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z].*")) {
-			String message_websitespam_replaced = event.getMessage().replaceAll("[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z]", plugin.getConfig().getString("antispam-websitespam.replace-with"));
-			event.setMessage(message_websitespam_replaced);
+			// String message_websitespam_replaced = event.getMessage().replaceAll("[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z]", plugin.getConfig().getString("antispam-websitespam.replace-with"));
+			// event.setMessage(message_websitespam_replaced);
+			if (plugin.getConfig().getString("antispam-websitespam.replace-with").equals("")) {
+				event.setCancelled(true);
+			} else {
+				event.setMessage(plugin.getConfig().getString("antispam-websitespam.replace-with"));
+			}
 			String commandIpSpam = plugin.getConfig().getString("antispam-websitespam.command-on-websitespam").replace("%player%", player.getName());
 			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
 		}
@@ -110,13 +116,13 @@ public class Listeners implements Listener {
 		if (plugin.getConfig().getBoolean("autoanswer-enabled") && !player.hasPermission("roboticstaff.autoanswer.bypass")) {
 			int tagInt = 0;
 			for (String tag : plugin.tags) {
-				tag.toLowerCase().replace(" ", "");
+				tag = tag.toLowerCase().replace(" ", "");
 				String message = event.getMessage().toLowerCase().replace(" ", "");
 				if (tag.contains("%or%")) {
 					String[] splittedTagArray = tag.split("%or%");
 					for (String splittedTag : Arrays.asList(splittedTagArray)) {
 						if (splittedTag.contains(",")) {
-							String[] doubleSplittedTagArray = splittedTag.split("%or%");
+							String[] doubleSplittedTagArray = splittedTag.split(",");
 							int messageTags = 0;
 							for (String doubleSplittedTag : Arrays.asList(doubleSplittedTagArray)) {
 								if (message.contains(doubleSplittedTag)) {

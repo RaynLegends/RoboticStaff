@@ -146,16 +146,18 @@ public class Functions {
 	public void executeAutoanswerAnswer(final Player player, final String answer) {
 		plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
-				answer.replace("%player%", player.getName());
-				answer.replace("%noprefix%", "");
+				String answerReplaced = answer.replace("%player%", player.getName());
 
-				if (answer.startsWith("/")) {
-					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), answer.replace("/", ""));
-				} else if (answer.startsWith("%broadcast%")) {
-					answer.replace("%broadcast%", "");
-					sendBroadcastMessage(answer);
+				if (answerReplaced.startsWith("/")) {
+					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), answerReplaced.replace("/", ""));
+				} else if (answerReplaced.startsWith("%broadcast%")) {
+					answerReplaced = answerReplaced.replace("%broadcast%", "");
+					sendBroadcastMessage(answerReplaced);
+				} else if (answerReplaced.startsWith("%noprefix%")) {
+					answerReplaced = answerReplaced.replace("%noprefix%", "");
+					sendNoprefixMessage(player, answerReplaced);
 				} else {
-					sendPlayerMessage(player, answer);
+					sendPlayerMessage(player, answerReplaced);
 				}
 			}
 		}, 1);

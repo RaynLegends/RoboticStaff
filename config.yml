@@ -5,69 +5,74 @@
 ### If you find a bug, please let me know :D ###
 
 ### RoboticStaff configuration ###
-config-version: '1.9' # Don't edit this!
+config-version: '2.0' # Don't edit this!
 update-checker: 'true' # Change to "false" if you don't want to check updates
 
 ## General command ##
 
-roboticstaff-prefix: '&6[RoboticStaff]&e '
-roboticstaff-join: 'This server use RoboticStaff!'
+roboticstaff-prefix: "&6[RoboticStaff]&e "
+roboticstaff-join: "This server use RoboticStaff!"
 
 ## Helpme ##
 
 helpme-enabled: true
-helpme-help: 'Need help? Type "/helpme [id]"!'
-helpme-disabled-message: '&rUnknown command. Type "/help" for help.'
+helpme-help: "Need help? Type '/helpme [id]'!"
+helpme-disabled-message: "&rUnknown command. Type \"/help\" for help." # The \ is used to escape quotes " (\"). It will print only the quote :)
 
-helpme-ask:
-  - 'What is that plugin?'
-  - 'Can I translate the plugin?'
-  - 'What are the future features?'
+helpme-asks:
+  - "What is that plugin?"
+  - "Can I translate the plugin?"
+  - "What are the future features?"
+  - "Why &2this &4is colored???"
 
-helpme-answer:
-  - 'Is a simple plugin which will be able in the future to replace partly your staff'
-  - 'Yes, you can! ALL the messages is configurable in config.yml!'
-  - 'Check the TODO list of BukkitDev page for a list of the future feature!'
+helpme-answers:
+  - "Is a simple plugin which will be able in the future to replace partly your staff"
+  - "Yes, you can! ALL the messages is configurable in config.yml!"
+  - "Check the TODO list of BukkitDev page for a list of the future feature!"
+  - "Cause you can format also helpme now!!! &l&k111 &1W&2O&3A&4&5H&6 &l&k111"
 
-helpme-error-1: 'Invalid ask id!'
-helpme-error-2: 'Id must be a number!'
-helpme-error-3: 'Right use: "/helpme id"'
+helpme-error: "Error:"
+helpme-error-1: "Invalid ask id!"
+helpme-error-2: "Id must be a number!"
+helpme-error-3: "Right use: '/helpme [id]'"
 
 ## AutoAnswer ##
 
 autoanswer-enabled: true
 
-autoanswer-tag:
-  - 'RoboticStaff'
-  - 'I, need, help'
-  - 'Can, I, become, an, admin %or% I, would, like, to, become, admin'
-  - 'Ban, me, please'
-  - 'Hi raynlegends %or% Hey raynlegends %or% Good morning raynlegends'
-  - 'How, can, I, configure, this, plugin'
+autoanswer-tags:
+  - "RoboticStaff"
+  - "I, need, help"
+  - "Can, I, become, an, admin %or% I, would, like, to, become, admin"
+  - "Ban, me, please"
+  - "Hi raynlegends %or% Hey raynlegends %or% Good morning raynlegends"
+  - "How, can, I, configure, this, plugin"
+  - "This message will be broadcasted and it's to show you that you can also not use commas!"
   
-autoanswer-tag-answer:
-  - 'Its the name of this plugin, %player%'
-  - 'Type /helpme!'
-  - 'Sorry, you cant'
-  - '/kick %player%'
-  - '%noprefix% &4[Founder] &4Rayn&8Legends&r: Hi %player%'
-  - 'Visit the BukkitDev page! &4http://dev.bukkit.org/bukkit-mods/RoboticStaff'
+autoanswer-tag-answers:
+  - "Its the name of this plugin, %player%"
+  - "Type /helpme!"
+  - "Sorry, you cant"
+  - "/kick %player%"
+  - "%noprefix% &4[Founder] &4Rayn&8Legends&r: Hi %player% :)"
+  - "Visit the BukkitDev page! &4http://dev.bukkit.org/bukkit-mods/RoboticStaff"
+  - "%broadcast% This message will be broadcasted and it's to show you that you can also not use commas!"
 
 ## AntiSwearing ##
 
 antiswearing-enabled: true
 
 antiswearing-words:
-  - 'Fuck'
-  - 'Shit'
-  - 'Bitch'
+  - "Fuck"
+  - "Shit"
+  - "Bitch"
   
-antiswearing-beep: '[BIP]'
+antiswearing-beep: "[BIP]"
 
 ## BlockedCommands ##
 
 blockedcommands-enabled: true
-blockedcommands-message: '&4This command is blocked in this world'
+blockedcommands-message: "&4This command is blocked in this world"
 
 blockedcommands-general:
   - q
@@ -85,18 +90,18 @@ blockedcommands-perworld:
 ## AntiSpam ##
 antispam-delay:
   enabled: true
-  message: 'You have to wait %time% to send a message'
+  message: "You have to wait %time% to send a message"
   delay-between-messages: 3
 
 antispam-ipspam:
   enabled: true
   replace-with: "----"
-  command-on-ipspam: '/kick %player% Dont spam ip!'
+  command-on-ipspam: "/kick %player% Dont spam ip!"
 
 antispam-websitespam:
   enabled: true
-  replace-with: "----"
-  command-on-websitespam: '/kick %player% Dont spam website!'
+  replace-with: "I spammed a website... :/"
+  command-on-websitespam: "/kick %player% Dont spam website!"
 
 ## OnActions ##
 # Only two events at the moment, I'll add more events in the next version! #
@@ -104,9 +109,9 @@ antispam-websitespam:
 playerjoin:
   enabled: true
   commands:
-    - '/gamemode 0 %player%'
+    - "/gamemode 0 %player%"
   
 playerdeath:
   enabled: false
   commands:
-    - '/tell %player% You died'
+    - "/tell %player% You died."

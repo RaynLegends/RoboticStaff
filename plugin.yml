@@ -7,14 +7,14 @@ author: RaynLegends
 commands:
     helpme:
         description: Type /helpme if you need help!
-        usage: /helpme <id>
+        usage: /helpme [id]
         permission: roboticstaff.helpme
-        permission-message: You don't have permission for do that
+        permission-message: You don't have permission to do that
     roboticstaff:
         description: General command of RoboticStaff
         usage: /roboticstaff [reload|tag|words|blocked]
         permission: roboticstaff.access
-        permission-message: You don't have permission for do that
+        permission-message: You don't have permission to do that
       
 permissions:
     roboticstaff.*:

@@ -100,14 +100,14 @@ public class Commands implements CommandExecutor {
 					functions.sendSenderMessage(sender, plugin.helpme_help);
 					int i = 0;
 					for (String ask : plugin.asks) {
-						sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + i + " - " + ask);
+						sender.sendMessage(ChatColor.DARK_RED + " " + i + ChatColor.DARK_GRAY + " > " + ChatColor.DARK_GREEN + ChatColor.translateAlternateColorCodes('&', ask));
 						i++;
 					}
 				} else if (args.length == 1) {
 					try {
 						int int_arg = Integer.parseInt(args[0]);
 						if (int_arg <= plugin.asks.size() - 1) {
-							sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + int_arg + " - " + plugin.asks.get(int_arg));
+							sender.sendMessage("\n" + ChatColor.DARK_GREEN + plugin.asks.get(int_arg) + ChatColor.DARK_GRAY + "\n>> " + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', plugin.answers.get(int_arg)));
 						} else {
 							sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_1);
 						}
