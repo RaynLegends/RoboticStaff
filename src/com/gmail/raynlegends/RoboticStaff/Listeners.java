@@ -4,13 +4,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLevelChangeEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 public class Listeners implements Listener {
 
@@ -20,20 +25,6 @@ public class Listeners implements Listener {
 	public Listeners(Main instance, Functions functionsInstance) {
 		plugin = instance;
 		functions = functionsInstance;
-	}
-
-	@EventHandler
-	public void onPlayerJoinEvent(PlayerJoinEvent event) {
-		Player player = event.getPlayer();
-		if (!plugin.join.equals("")) {
-			functions.sendPlayerMessage(player, plugin.join);
-		}
-		if (plugin.getConfig().getBoolean("playerjoin.enabled")) {
-			for (String playerJoinCommand : plugin.playerJoinCommands) {
-				playerJoinCommand = playerJoinCommand.replace("%player%", player.getName());
-				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerJoinCommand.replace("/", ""));
-			}
-		}
 	}
 
 	@EventHandler
@@ -47,7 +38,7 @@ public class Listeners implements Listener {
 			for (String command : blockedCommands) {
 				if (event.getMessage().toLowerCase().startsWith("/" + command)) {
 					event.setCancelled(true);
-					functions.sendPlayerMessage(player, plugin.getConfig().getString("blockedcommands-message"));
+					functions.sendNoprefixMessage(player, plugin.getConfig().getString("blockedcommands-message"));
 				}
 			}
 
@@ -58,7 +49,7 @@ public class Listeners implements Listener {
 				for (String command : blockedCommandsPerWorld) {
 					if (event.getMessage().toLowerCase().startsWith("/" + command)) {
 						event.setCancelled(true);
-						player.sendMessage(plugin.getConfig().getString("blockedcommands-message"));
+						functions.sendNoprefixMessage(player, plugin.getConfig().getString("blockedcommands-message"));
 					}
 				}
 			} catch (Exception e) {
@@ -100,8 +91,6 @@ public class Listeners implements Listener {
 		}
 
 		if (plugin.getConfig().getBoolean("antispam-websitespam.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.websitespam") && event.getMessage().toLowerCase().matches(".*[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z].*")) {
-			// String message_websitespam_replaced = event.getMessage().replaceAll("[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z]", plugin.getConfig().getString("antispam-websitespam.replace-with"));
-			// event.setMessage(message_websitespam_replaced);
 			if (plugin.getConfig().getString("antispam-websitespam.replace-with").equals("")) {
 				event.setCancelled(true);
 			} else {
@@ -129,11 +118,17 @@ public class Listeners implements Listener {
 									messageTags++;
 								}
 								if (messageTags == doubleSplittedTagArray.length) {
+									if (plugin.tag_answers.get(tagInt).contains("@delete")) {
+										event.setCancelled(true);
+									}
 									functions.executeAutoanswerAnswer(player, plugin.tag_answers.get(tagInt));
 									return;
 								}
 							}
 						} else if (message.contains(splittedTag)) {
+							if (plugin.tag_answers.get(tagInt).contains("@delete")) {
+								event.setCancelled(true);
+							}
 							functions.executeAutoanswerAnswer(player, plugin.tag_answers.get(tagInt));
 							return;
 						}
@@ -146,11 +141,17 @@ public class Listeners implements Listener {
 							messageTags++;
 						}
 						if (messageTags == splittedTagArray.length) {
+							if (plugin.tag_answers.get(tagInt).contains("@delete")) {
+								event.setCancelled(true);
+							}
 							functions.executeAutoanswerAnswer(player, plugin.tag_answers.get(tagInt));
 							return;
 						}
 					}
 				} else if (message.contains(tag)) {
+					if (plugin.tag_answers.get(tagInt).contains("@delete")) {
+						event.setCancelled(true);
+					}
 					functions.executeAutoanswerAnswer(player, plugin.tag_answers.get(tagInt));
 					return;
 				}
@@ -163,17 +164,81 @@ public class Listeners implements Listener {
 		if(plugin.getConfig().getBoolean("antiswearing-enabled") && !player.hasPermission("roboticstaff.antiswearing.bypass")) {
 			for (String word : plugin.words) {
 				word.toLowerCase();
-				event.setMessage(event.getMessage().replaceAll("(?i)" + word, plugin.beep));
+				event.setMessage(event.getMessage().replaceAll("(?i)" + word, ChatColor.translateAlternateColorCodes('&', plugin.beep)));
 			}
 		}
 	}
 
 	@EventHandler
+	public void onPlayerJoinEvent(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+		if (!plugin.join.equals("")) {
+			functions.sendPlayerMessage(player, plugin.join);
+		}
+		if (plugin.getConfig().getBoolean("playerjoin.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playerjoin.commands")) {
+				playerCommand = playerCommand.replace("%player%", player.getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {
 		if (plugin.getConfig().getBoolean("playerdeath.enabled")) {
-			for (String playerDeathCommand : plugin.getConfig().getStringList("playerdeath.commands")) {
-				playerDeathCommand.replace("%player%", event.getEntity().getName());
-				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerDeathCommand.replace("/", ""));
+			for (String playerCommand : plugin.getConfig().getStringList("playerdeath.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getEntity().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerQuitEvent(PlayerQuitEvent event) {
+		if (plugin.getConfig().getBoolean("playerquit.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playerquit.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getPlayer().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerKickEvent(PlayerQuitEvent event) {
+		if (plugin.getConfig().getBoolean("playerkick.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playerkick.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getPlayer().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
+		if (plugin.getConfig().getBoolean("playerchangedworld.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playerchangedworld.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getPlayer().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerLevelChangeEvent(PlayerLevelChangeEvent event) {
+		if (plugin.getConfig().getBoolean("playerlevelchange.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playerlevelchange.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getPlayer().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+		if (plugin.getConfig().getBoolean("playergamemodechange.enabled")) {
+			for (String playerCommand : plugin.getConfig().getStringList("playergamemodechange.commands")) {
+				playerCommand = playerCommand.replace("%player%", event.getPlayer().getName());
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), playerCommand.replace("/", ""));
 			}
 		}
 	}

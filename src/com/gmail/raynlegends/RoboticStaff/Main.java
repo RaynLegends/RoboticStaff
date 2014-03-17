@@ -29,7 +29,6 @@ public class Main extends JavaPlugin {
 	public String helpme_error_1;
 	public String helpme_error_2;
 	public String helpme_error_3;
-	public List<String> playerJoinCommands;
 
 	public final HashMap<Player, Long> chatMap = new HashMap<Player, Long>();
 
@@ -60,7 +59,6 @@ public class Main extends JavaPlugin {
 		helpme_error_1 = getConfig().getString("helpme-error-1");
 		helpme_error_2 = getConfig().getString("helpme-error-2");
 		helpme_error_3 = getConfig().getString("helpme-error-2");
-		playerJoinCommands = getConfig().getStringList("playerjoin.commands");
 
 		// Update checker
 

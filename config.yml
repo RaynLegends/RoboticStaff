@@ -9,11 +9,17 @@ config-version: '2.0' # Don't edit this!
 update-checker: 'true' # Change to "false" if you don't want to check updates
 
 ## General command ##
+# You can set the RoboticStaff prefix here!
+# To disable the join message, simply leave it blank. - ""
 
 roboticstaff-prefix: "&6[RoboticStaff]&e "
 roboticstaff-join: "This server use RoboticStaff!"
 
 ## Helpme ##
+# Players can access to the faqs using /helpme
+# Make a list of asks and answers about your server,
+# that users can read easily using /helpme [id of the question].
+# Using /helpme will print a list of the asks with the relative ID.
 
 helpme-enabled: true
 helpme-help: "Need help? Type '/helpme [id]'!"
@@ -37,6 +43,36 @@ helpme-error-2: "Id must be a number!"
 helpme-error-3: "Right use: '/helpme [id]'"
 
 ## AutoAnswer ##
+# Autoanswer will check if the message of the players contains the words configured below.
+# 
+# Do not use commas if you want to find only identical phrases.
+# Example:
+# #  - "This server is amazing"
+# Will catch:
+# # "this server is amazing"
+# # Or any message that contains it.
+#
+# Use commas to separate words that will be checked.
+# Example:
+# #  - "This, creeper"
+# Will catch:
+# # "this is a creeper"
+# # "this creeper is scary!"
+# # And many other phrases
+# 
+# Use %or% to make multiple tags
+# Example:
+# #  - "This, message %or% that, message"
+# Will catch:
+# # "this pretty lovely message"
+# # "that isn't a readable message"
+# # And many other phrases
+#
+# In the answers, %player% will be always replaced with the name of the player
+# Add / in front of the answer to execute a console command
+# Add @noprefix in front of the answer to remove [RoboticStaff] and the prefix-colors
+# Add @broadcast in front of the answer to broadcast the answer to all your players
+# Add @delete in any part of the answer to delete the message of the user
 
 autoanswer-enabled: true
 
@@ -48,17 +84,21 @@ autoanswer-tags:
   - "Hi raynlegends %or% Hey raynlegends %or% Good morning raynlegends"
   - "How, can, I, configure, this, plugin"
   - "This message will be broadcasted and it's to show you that you can also not use commas!"
+  - "My, password, is"
   
 autoanswer-tag-answers:
   - "Its the name of this plugin, %player%"
   - "Type /helpme!"
   - "Sorry, you cant"
   - "/kick %player%"
-  - "%noprefix% &4[Founder] &4Rayn&8Legends&r: Hi %player% :)"
+  - "@noprefix &4[Founder] &4Rayn&8Legends&r: Hi %player% :)"
   - "Visit the BukkitDev page! &4http://dev.bukkit.org/bukkit-mods/RoboticStaff"
-  - "%broadcast% This message will be broadcasted and it's to show you that you can also not use commas!"
+  - "@broadcast This message will be broadcasted and it's to show you that you can also not use commas!"
+  - "Don't write your minecraft password! @delete"
 
 ## AntiSwearing ##
+# Antiswearing will replace blocked words to the antiswearing-beep.
+# Just make a list of it.
 
 antiswearing-enabled: true
 
@@ -67,9 +107,10 @@ antiswearing-words:
   - "Shit"
   - "Bitch"
   
-antiswearing-beep: "[BIP]"
+antiswearing-beep: "&c[BIP]&r"
 
 ## BlockedCommands ##
+# Block commands. Remember that world are case sensitive!
 
 blockedcommands-enabled: true
 blockedcommands-message: "&4This command is blocked in this world"
@@ -88,6 +129,15 @@ blockedcommands-perworld:
     - pl
 
 ## AntiSpam ##
+# The antispam delay-between-messages is in seconds.
+# The antispam-ipspam will replace only the ip.
+# Example:
+# # "Hey, come at my server: 127.0.0.1" -> "Hey, come at my server: ----"
+# The antispam-websitespam will replace the whole phrase, cause it's difficult
+# to keep it so accurate without replacing all the message...
+# Example:
+# # "Hey, visit my website: minecraft.net" -> "I spammed a website... :/"
+
 antispam-delay:
   enabled: true
   message: "You have to wait %time% to send a message"
@@ -104,7 +154,8 @@ antispam-websitespam:
   command-on-websitespam: "/kick %player% Dont spam website!"
 
 ## OnActions ##
-# Only two events at the moment, I'll add more events in the next version! #
+# Use this with your creativity!
+# I really don't know why I added this
 
 playerjoin:
   enabled: true
@@ -115,3 +166,28 @@ playerdeath:
   enabled: false
   commands:
     - "/tell %player% You died."
+
+playerquit:
+  enabled: false
+  commands:
+    - "/scoreboard players remove %player% MyScoreboard"
+    
+playerkick:
+  enabled: false
+  commands:
+    - "/scoreboard players remove %player% MyScoreboard"
+    
+playerchangedworld:
+  enabled: false
+  commands:
+    - "/msg @console The player %player% has left the world!"
+    
+playerlevelchange:
+  enabled: false
+  commands:
+    - "/eco give %player% 10"
+    
+playergamemodechange:
+  enabled: false
+  commands:
+    - "/msg @console Hey! %player% has just changed his gamemode!!!"

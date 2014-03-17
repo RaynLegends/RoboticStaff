@@ -139,22 +139,21 @@ public class Functions {
 		if (plugin.tags.size() != plugin.tag_answers.size()) {
 			sendSenderMessage(sender, Messages.disequalTagAndTagAnswers);
 		}
-
-		sendSenderMessage(sender, Messages.pluginReloaded);
 	}
 
 	public void executeAutoanswerAnswer(final Player player, final String answer) {
 		plugin.getServer().getScheduler().runTaskLater(plugin, new Runnable() {
 			public void run() {
 				String answerReplaced = answer.replace("%player%", player.getName());
-
+				answerReplaced = answerReplaced.replace("@delete", "");
+				
 				if (answerReplaced.startsWith("/")) {
 					Bukkit.dispatchCommand(Bukkit.getConsoleSender(), answerReplaced.replace("/", ""));
-				} else if (answerReplaced.startsWith("%broadcast%")) {
-					answerReplaced = answerReplaced.replace("%broadcast%", "");
+				} else if (answerReplaced.startsWith("@broadcast")) {
+					answerReplaced = answerReplaced.replace("@broadcast", "");
 					sendBroadcastMessage(answerReplaced);
-				} else if (answerReplaced.startsWith("%noprefix%")) {
-					answerReplaced = answerReplaced.replace("%noprefix%", "");
+				} else if (answerReplaced.startsWith("@noprefix")) {
+					answerReplaced = answerReplaced.replace("@noprefix", "");
 					sendNoprefixMessage(player, answerReplaced);
 				} else {
 					sendPlayerMessage(player, answerReplaced);

@@ -75,7 +75,7 @@ public class Commands implements CommandExecutor {
 
 					if (sender.hasPermission("roboticstaff.blockedcommands.list")) {
 						try {
-							functions.sendSenderMessage(sender, Messages.blockedPerWorldList);
+							functions.sendSenderMessage(sender, Messages.blockedPerWorldList.replace("%s", args[1]));
 							for (String blocked : plugin.getConfig().getStringList("blockedcommands-perworld." + args[1])) {
 								sender.sendMessage(ChatColor.RED + ">> " + ChatColor.YELLOW + blocked);
 							}
@@ -107,7 +107,7 @@ public class Commands implements CommandExecutor {
 					try {
 						int int_arg = Integer.parseInt(args[0]);
 						if (int_arg <= plugin.asks.size() - 1) {
-							sender.sendMessage("\n" + ChatColor.DARK_GREEN + plugin.asks.get(int_arg) + ChatColor.DARK_GRAY + "\n>> " + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', plugin.answers.get(int_arg)));
+							sender.sendMessage("\n" + ChatColor.DARK_GREEN + ChatColor.translateAlternateColorCodes('&', plugin.asks.get(int_arg)) + ChatColor.DARK_GRAY + "\n>> " + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', plugin.answers.get(int_arg)));
 						} else {
 							sender.sendMessage(ChatColor.RED + plugin.helpme_error + ChatColor.YELLOW + " " + plugin.helpme_error_1);
 						}
