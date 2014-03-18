@@ -20,6 +20,6 @@ public class Messages {
 	public static String blockedPerWorldTip = "To get a list of blocked commands of a specific world, type \"/roboticstaff blocked <WorldName>\"";
 	public static String blockedPerWorldList = "List of blocked commands in the world %s";
 	public static String strangeRoboticstaffArguments = "The argument %s isn't valid. Type \"/roboticstaff\" to get a list";
-	public static String blockedWorldNotFound = "Can't find the world &s in configuration!";
+	public static String blockedWorldNotFound = "Can't find the world %s in configuration!";
 	public static String roboticstaffBase = "These are the roboticstaff commands: \n/roboticstaff reload -> Reloads the plugin \n/roboticstaff tags -> Get a list of the tags \n/roboticstaff words -> Get a list of banned words \n/roboticstaff blocked [worldname] -> Get a list of blocked commands";
 }

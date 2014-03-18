@@ -87,7 +87,9 @@ public class Listeners implements Listener {
 			String message_ipspam_replaced = event.getMessage().replaceAll("(?s)([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])", plugin.getConfig().getString("antispam-ipspam.replace-with"));
 			event.setMessage(message_ipspam_replaced);
 			String commandIpSpam = plugin.getConfig().getString("antispam-ipspam.command-on-ipspam").replace("%player%", player.getName());
-			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
+			if(!commandIpSpam.equals("")) {
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
+			}
 		}
 
 		if (plugin.getConfig().getBoolean("antispam-websitespam.enabled") && !event.getPlayer().hasPermission("roboticstaff.antispam.bypass.websitespam") && event.getMessage().toLowerCase().matches(".*[-a-zA-Z0-9.][-a-zA-Z0-9.][-a-zA-Z0-9.]\\.[-a-zA-Z][-a-zA-Z].*")) {
@@ -96,8 +98,10 @@ public class Listeners implements Listener {
 			} else {
 				event.setMessage(plugin.getConfig().getString("antispam-websitespam.replace-with"));
 			}
-			String commandIpSpam = plugin.getConfig().getString("antispam-websitespam.command-on-websitespam").replace("%player%", player.getName());
-			plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandIpSpam.replace("/", ""));
+			String commandWebsiteSpam = plugin.getConfig().getString("antispam-websitespam.command-on-websitespam").replace("%player%", player.getName());
+			if(!commandWebsiteSpam.equals("")) {
+				plugin.getServer().dispatchCommand(plugin.getServer().getConsoleSender(), commandWebsiteSpam.replace("/", ""));
+			}
 		}
 
 		// Autoanswer
@@ -182,7 +186,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerDeathEvent(PlayerDeathEvent event) {
 		if (plugin.getConfig().getBoolean("playerdeath.enabled")) {
@@ -192,7 +196,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerQuitEvent(PlayerQuitEvent event) {
 		if (plugin.getConfig().getBoolean("playerquit.enabled")) {
@@ -202,7 +206,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerKickEvent(PlayerQuitEvent event) {
 		if (plugin.getConfig().getBoolean("playerkick.enabled")) {
@@ -212,7 +216,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerChangedWorldEvent(PlayerChangedWorldEvent event) {
 		if (plugin.getConfig().getBoolean("playerchangedworld.enabled")) {
@@ -222,7 +226,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerLevelChangeEvent(PlayerLevelChangeEvent event) {
 		if (plugin.getConfig().getBoolean("playerlevelchange.enabled")) {
@@ -232,7 +236,7 @@ public class Listeners implements Listener {
 			}
 		}
 	}
-	
+
 	@EventHandler
 	public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
 		if (plugin.getConfig().getBoolean("playergamemodechange.enabled")) {
