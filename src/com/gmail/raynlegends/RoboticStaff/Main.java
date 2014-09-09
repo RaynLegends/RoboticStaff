@@ -1,73 +1,45 @@
 package com.gmail.raynlegends.RoboticStaff;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
-	private Main plugin;
-	private Listeners listener;
-	private Functions functions;
+	private Events listener;
 	private Commands commands;
-
-	protected String version = "2.0";
-	protected String config_version;
-
-	public String prefix;
-	public String join;
-	public List<String> asks;
-	public List<String> answers;
-	public List<String> tags;
-	public List<String> tag_answers;
-	public List<String> words;
-	public String beep;
-	public String helpme_help;
-	public String helpme_error;
-	public String helpme_error_1;
-	public String helpme_error_2;
-	public String helpme_error_3;
-
-	public final HashMap<Player, Long> chatMap = new HashMap<Player, Long>();
+	private static Main plugin;
 
 	public void onEnable() {
 		plugin = this;
-		functions = new Functions(plugin);
-		listener = new Listeners(plugin, functions);
-		commands = new Commands(plugin, functions);
+		listener = new Events();
+		commands = new Commands();
 
 		// Config loader & version checker
 
 		saveDefaultConfig();
-		config_version = getConfig().getString("config-version");
-		functions.checkConfig();
+		Functions.checkConfig();
 
-		// Get variables from configuration
-
-		prefix = getConfig().getString("roboticstaff-prefix");
-		join = getConfig().getString("roboticstaff-join");
-		asks = getConfig().getStringList("helpme-asks");
-		answers = getConfig().getStringList("helpme-answers");
-		tags = getConfig().getStringList("autoanswer-tags");
-		tag_answers = getConfig().getStringList("autoanswer-tag-answers");
-		words = getConfig().getStringList("antiswearing-words");
-		beep = getConfig().getString("antiswearing-beep");
-		helpme_help = getConfig().getString("helpme-help");
-		helpme_error = getConfig().getString("helpme-error");
-		helpme_error_1 = getConfig().getString("helpme-error-1");
-		helpme_error_2 = getConfig().getString("helpme-error-2");
-		helpme_error_3 = getConfig().getString("helpme-error-2");
+		/*prefix = Main.getPlugin().getConfig().getString("roboticstaff-prefix");
+		join = Main.getPlugin().getConfig().getString("roboticstaff-join");
+		asks = Main.getPlugin().getConfig().getStringList("helpme-asks");
+		answers = Main.getPlugin().getConfig().getStringList("helpme-answers");
+		tags = Main.getPlugin().getConfig().getStringList("autoanswer-tags");
+		tag_answers = Main.getPlugin().getConfig().getStringList("autoanswer-tag-answers");
+		words = Main.getPlugin().getConfig().getStringList("antiswearing-words");
+		beep = Main.getPlugin().getConfig().getString("antiswearing-beep");
+		helpme_help = Main.getPlugin().getConfig().getString("helpme-help");
+		helpme_error = Main.getPlugin().getConfig().getString("helpme-error");
+		helpme_error_1 = Main.getPlugin().getConfig().getString("helpme-error-1");
+		helpme_error_2 = Main.getPlugin().getConfig().getString("helpme-error-2");
+		helpme_error_3 = Main.getPlugin().getConfig().getString("helpme-error-2");*/
 
 		// Update checker
 
 		if (getConfig().getString("update-checker").equalsIgnoreCase("true")) {
-			functions.checkUpdates(getFile());
+			Functions.checkUpdates(getFile());
 		}
 
 		// Check asks and tags
-		functions.checkAskAndTags(getServer().getConsoleSender());
+		Functions.checkAskAndTags(getServer().getConsoleSender());
 
 		// Set command executor
 		getCommand("roboticstaff").setExecutor(commands);
@@ -83,5 +55,17 @@ public class Main extends JavaPlugin {
 
 	public void onDisable() {
 		getLogger().info(Messages.successfullyDisabled);
+	}
+	
+	public static Main getPlugin() {
+		return plugin;
+	}
+	
+	public static String getConfigVersion() {
+		return plugin.getConfig().getString("config-version");
+	}
+	
+	public static String getVersion() {
+		return plugin.getDescription().getVersion();
 	}
 }

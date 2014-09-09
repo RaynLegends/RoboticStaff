@@ -5,7 +5,7 @@
 ### If you find a bug, please let me know :D ###
 
 ### RoboticStaff configuration ###
-config-version: '2.0' # Don't edit this!
+config-version: '2.1' # Don't edit this!
 update-checker: 'true' # Change to "false" if you don't want to check updates
 
 ## General command ##
@@ -41,6 +41,15 @@ helpme-error: "Error:"
 helpme-error-1: "Invalid ask id!"
 helpme-error-2: "Id must be a number!"
 helpme-error-3: "Right use: '/helpme [id]'"
+
+## AntiCaps ##
+# The anticaps will simply lowercase all the message if
+# there are more than (anticaps-percentage)% uppercase characters if
+# the message is longer than (anticaps-minimum) characters
+
+anticaps-enabled: true
+anticaps-percentage: 60.0
+anticaps-minimum: 4
 
 ## AutoAnswer ##
 # Autoanswer will check if the message of the players contains the words configured below.

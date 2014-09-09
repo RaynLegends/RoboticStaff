@@ -1,6 +1,6 @@
 name: RoboticStaff
 main: com.gmail.raynlegends.RoboticStaff.Main
-version: 2.0
+version: 2.1
 description: Auto anwser to player message and more!
 author: RaynLegends
     
@@ -76,4 +76,7 @@ permissions:
         default: op
     roboticstaff.antispam.bypass.websitespam:
         description: Bypass websitespam
+        default: op
+    roboticstaff.anticaps.bypass:
+        description: Bypass anticaps
         default: op
