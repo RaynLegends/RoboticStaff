@@ -80,3 +80,6 @@ permissions:
     roboticstaff.anticaps.bypass:
         description: Bypass anticaps
         default: op
+    roboticstaff.toggle:
+        description: Access to /roboticstaff toggle
+        default: op

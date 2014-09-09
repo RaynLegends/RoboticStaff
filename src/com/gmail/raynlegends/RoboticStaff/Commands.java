@@ -54,6 +54,13 @@ public class Commands implements CommandExecutor {
 						}
 						Functions.sendSenderMessage(sender, Messages.blockedPerWorldTip);
 					}
+				} else if (args[0].equalsIgnoreCase("toggle")) {
+
+					// Command: /roboticstaff blocked
+
+					if (sender.hasPermission("roboticstaff.toggle")) {
+						Functions.sendSenderMessage(sender, "Modules: helpme, anticaps, autoanswer, antiswearing, blockedcommands, antispam-delay, antispam-ip, antispam-website; OnActions: playerjoin, playerquit, playerdeath, playerkick, playerchangedworld, playerlevelchange, playergamemodechange");
+					}
 				} else {
 
 					// Command: /roboticstaff anythingElse
@@ -73,6 +80,29 @@ public class Commands implements CommandExecutor {
 							}
 						} catch (Exception e) {
 							Functions.sendSenderMessage(sender, Messages.blockedWorldNotFound.replace("%s", args[1]));
+						}
+					}
+				} else if (args[0].equalsIgnoreCase("toggle")) {
+
+					// Command: /roboticstaff blocked
+
+					if (sender.hasPermission("roboticstaff.toggle")) {
+						switch (args[1].toLowerCase()) {
+						case "helpme": Main.getPlugin().getConfig().set("helpme-enabled", !Main.getPlugin().getConfig().getBoolean("helpme-enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("helpme-enabled") ? "Enabled!" : "Disabled!")); break;
+						case "anticaps": Main.getPlugin().getConfig().set("anticaps-enabled", !Main.getPlugin().getConfig().getBoolean("anticaps-enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("anticaps-enabled") ? "Enabled!" : "Disabled!")); break; 
+						case "autoanswer": Main.getPlugin().getConfig().set("autoanswer-enabled", !Main.getPlugin().getConfig().getBoolean("autoanswer-enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("autoanswer-enabled") ? "Enabled!" : "Disabled!")); break; 
+						case "antiswearing": Main.getPlugin().getConfig().set("antiswearing-enabled", !Main.getPlugin().getConfig().getBoolean("antiswearing-enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("antiswearing-enabled") ? "Enabled!" : "Disabled!")); break;
+						case "blockedcommands": Main.getPlugin().getConfig().set("blockedcommands-enabled", !Main.getPlugin().getConfig().getBoolean("blockedcommands-enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("blockedcommands-enabled") ? "Enabled!" : "Disabled!")); break;
+						case "antispam-delay": Main.getPlugin().getConfig().set("antispam-delay.enabled", !Main.getPlugin().getConfig().getBoolean("antispam-delay.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("antispam-delay.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "antispam-ip": Main.getPlugin().getConfig().set("antispam-ipspam.enabled", !Main.getPlugin().getConfig().getBoolean("antispam-ipspam.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("antispam-ipspam.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "antispam-website": Main.getPlugin().getConfig().set("antispam-websitespam.enabled", !Main.getPlugin().getConfig().getBoolean("antispam-websitespam.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("antispam-websitespam.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerjoin": Main.getPlugin().getConfig().set("playerjoin.enabled", !Main.getPlugin().getConfig().getBoolean("playerjoin.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerjoin.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerquit": Main.getPlugin().getConfig().set("playerquit.enabled", !Main.getPlugin().getConfig().getBoolean("playerquit.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerquit.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerdeath": Main.getPlugin().getConfig().set("playerdeath.enabled", !Main.getPlugin().getConfig().getBoolean("playerdeath.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerdeath.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerkick": Main.getPlugin().getConfig().set("playerkick.enabled", !Main.getPlugin().getConfig().getBoolean("playerkick.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerkick.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerchangedworld": Main.getPlugin().getConfig().set("playerchangedworld.enabled", !Main.getPlugin().getConfig().getBoolean("playerchangedworld.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerchangedworld.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playerlevelchange": Main.getPlugin().getConfig().set("playerlevelchange.enabled", !Main.getPlugin().getConfig().getBoolean("playerlevelchange.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playerlevelchange.enabled") ? "Enabled!" : "Disabled!")); break;
+						case "playergamemodechange": Main.getPlugin().getConfig().set("playergamemodechange.enabled", !Main.getPlugin().getConfig().getBoolean("playergamemodechange.enabled")); Functions.sendSenderMessage(sender, (Main.getPlugin().getConfig().getBoolean("playergamemodechange.enabled") ? "Enabled!" : "Disabled!")); break;
 						}
 					}
 				} else {
